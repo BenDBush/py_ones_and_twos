@@ -1,10 +1,24 @@
 def fib_gen():
     """yields the fibonnacci sequence"""
+    a, b = 0, 1
     while True:
-        a, b = 0, 1
         yield b
         a, b = b, a + b
 
+
+
+def locate_entry_in_generator(entry, generator):
+    """returns the entry-th yield of the generator specified"""
+    n = 0
+    for i in generator():
+        if n == entry:
+            return i
+        elif n < entry:
+            n += 1
+
+
+
+
 if __name__ == '__main__':
-    for i in fib_gen():
-        print(i)
+    print(locate_entry_in_generator(5, fib_gen))  # this will give the number of options with 5 steps
+
