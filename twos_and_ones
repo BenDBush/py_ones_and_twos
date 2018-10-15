@@ -1,0 +1,10 @@
+def fib_gen():
+    """yields the fibonnacci sequence"""
+    while True:
+        a, b = 0, 1
+        yield b
+        a, b = b, a + b
+
+if __name__ == '__main__':
+    for i in fib_gen():
+        print(i)
