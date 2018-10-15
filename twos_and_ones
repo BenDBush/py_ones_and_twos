@@ -1,3 +1,8 @@
+import re
+"""Both functions allow for a series of steps 1 step long,
+and tell you that there is one option for how to take them: an empty string"""
+
+
 def fib_gen():
     """yields the fibonnacci sequence"""
     a, b = 0, 1
@@ -18,7 +23,23 @@ def locate_entry_in_generator(entry, generator):
 
 
 
+def one_two_steps():
+    series = ['']
+    new_series = []
+    while True:
+        yield series
+        new_series = [item + '1' for item in series]
+
+        for item in new_series:
+            new_item = re.sub(r'11$', r'2', item)  # locate entries ending in '11' and replace ending '11' with '2'
+            if new_item not in new_series:
+                new_series.append(new_item)
+
+
+        series = new_series  # update the series for the yield.
+
+
 
 if __name__ == '__main__':
     print(locate_entry_in_generator(5, fib_gen))  # this will give the number of options with 5 steps
-
+    print(locate_entry_in_generator(5, one_two_steps))  # this will print the ways of taking 5 steps in combinations of 1 or 2 at a time
