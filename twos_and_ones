@@ -1,3 +1,7 @@
+import unittest
+import hypothesis
+from hypothesis import given
+import hypothesis.strategies as st
 import re
 """Both functions allow for a series of steps 1 step long,
 and tell you that there is one option for how to take them: an empty string"""
@@ -23,13 +27,13 @@ def locate_entry_in_generator(entry, generator):
 
 
 
+
 def one_two_steps():
     series = ['']
     new_series = []
     while True:
         yield series
         new_series = [item + '1' for item in series]
-
         for item in new_series:
             new_item = re.sub(r'11$', r'2', item)  # locate entries ending in '11' and replace ending '11' with '2'
             if new_item not in new_series:
@@ -40,6 +44,21 @@ def one_two_steps():
 
 
 
+class TestFiboStep(unittest.TestCase):
+    @given(entry_to_find = st.integers(min_value = 1))
+    def test_locater_easy(self, entry_to_find):
+        a = locate_entry_in_generator(entry_to_find, lambda: range(entry_to_find+100))
+        self.assertEqual(entry_to_find, a)
+
+
+    @given(num_steps = st.integers(min_value = 1, max_value=100))
+    def test_fibo_steps(self, num_steps):
+        self.assertEqual(locate_entry_in_generator(num_steps, fib_gen),
+                        len(locate_entry_in_generator(num_steps, one_two_steps))
+                        )
+
+
+
+
 if __name__ == '__main__':
-    print(locate_entry_in_generator(5, fib_gen))  # this will give the number of options with 5 steps
-    print(locate_entry_in_generator(5, one_two_steps))  # this will print the ways of taking 5 steps in combinations of 1 or 2 at a time
+    unittest.main()
