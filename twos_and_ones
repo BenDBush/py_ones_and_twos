@@ -51,7 +51,7 @@ class TestFiboStep(unittest.TestCase):
         self.assertEqual(entry_to_find, a)
 
 
-    @given(num_steps = st.integers(min_value = 1, max_value=100))
+    @given(num_steps = st.integers(min_value = 1, max_value=10))
     def test_fibo_steps(self, num_steps):
         self.assertEqual(locate_entry_in_generator(num_steps, fib_gen),
                         len(locate_entry_in_generator(num_steps, one_two_steps))
